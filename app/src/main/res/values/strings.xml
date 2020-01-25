@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AgricultureGuide</string>
+    <string name="string_crops"><u>Crops >></u></string>
 </resources>

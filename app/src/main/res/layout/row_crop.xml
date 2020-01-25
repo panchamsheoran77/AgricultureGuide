@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
-    android:orientation="vertical">
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp">
-
-            <ImageView
-                android:id="@+id/img_crop"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:padding="7dp"
-                android:layout_gravity="center"
-                android:src="@drawable/garlic" />
-
-        </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/img_crop"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/garlic" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -37,22 +32,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="monospace"
-                android:text="Cauliflower"
+                android:fontFamily="sans-serif"
                 android:padding="5dp"
+                android:text="Cauliflower"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/lbl_crop_period"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
+                android:padding="5dp"
                 android:text="Sept - Oct"
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:layout_marginStart="5dp"
-                />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.HomeActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context=".activity.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp">
+            android:layout_margin="10dp">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/infoViewPager"
@@ -33,6 +32,7 @@
                 android:id="@+id/mainContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_gradient"
                 android:orientation="vertical">
 
@@ -133,6 +133,19 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lbl_show_crops"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/string_crops"
+                    android:textSize="18sp"
+
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"/>
 
             </LinearLayout>
 

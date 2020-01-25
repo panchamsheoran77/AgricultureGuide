@@ -3,11 +3,20 @@ package com.example.agricultureguide.model;
 public class Crop {
 	private String period;
 	private String name;
-	private String imgId;
+	private int imgId;
 
-	public Crop(String name, String imgId) {
+	public Crop(String period, String name, int imgId) {
+		this.period = period;
 		this.name = name;
 		this.imgId = imgId;
+	}
+
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
 	}
 
 	public String getName() {
@@ -18,11 +27,11 @@ public class Crop {
 		this.name = name;
 	}
 
-	public String getImgId() {
+	public int getImgId() {
 		return imgId;
 	}
 
-	public void setImgId(String imgId) {
+	public void setImgId(int imgId) {
 		this.imgId = imgId;
 	}
 }

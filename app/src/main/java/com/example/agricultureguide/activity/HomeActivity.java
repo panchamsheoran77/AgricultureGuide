@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
 	private TextView windTxt;
 	private TextView pressureTxt;
 	private TextView humidityTxt;
+	private TextView lblShowCrops;
 	private ImageView imgBottomSheetArrow;
 
 	private ProgressBar progressBar;
@@ -82,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 		windTxt = findViewById(R.id.wind);
 		pressureTxt = findViewById(R.id.pressure);
 		humidityTxt = findViewById(R.id.humidity);
+		lblShowCrops = findViewById(R.id.lbl_show_crops);
 		imgBottomSheetArrow = findViewById(R.id.img_bottom_sheet_arrow);
 
 		progressBar = findViewById(R.id.progress_bar);
@@ -130,9 +133,12 @@ public class HomeActivity extends AppCompatActivity {
 	}
 
 	private void prepareInfoList() {
-		infoList.add(R.drawable.img);
-		infoList.add(R.drawable.img1);
-		infoList.add(R.drawable.img2);
+		infoList.add(R.drawable.banner1);
+		infoList.add(R.drawable.banner2);
+		infoList.add(R.drawable.banner3);
+		infoList.add(R.drawable.banner4);
+		infoList.add(R.drawable.banner5);
+		infoList.add(R.drawable.banner6);
 	}
 
 	class WeatherTask extends AsyncTask<String, Void, String> {
@@ -154,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
 
 			try {
 				JSONObject jsonObj = new JSONObject(result);
-				JSONObject main = jsonObj.getJSONObject("main");
+				final JSONObject main = jsonObj.getJSONObject("main");
 				JSONObject sys = jsonObj.getJSONObject("sys");
 				JSONObject wind = jsonObj.getJSONObject("wind");
 				JSONObject weather = jsonObj.getJSONArray("weather").getJSONObject(0);
@@ -164,6 +170,7 @@ public class HomeActivity extends AppCompatActivity {
 				String updatedAtText = "Updated at: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 				String updateTime = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date);
 				String temp = main.getString("temp") + "°C";
+				final int avgTemp = main.getInt("temp");
 				String tempMin = "Min Temp: " + main.getString("temp_min") + "°C";
 				String tempMax = "Max Temp: " + main.getString("temp_max") + "°C";
 				String pressure = main.getString("pressure");
@@ -188,6 +195,21 @@ public class HomeActivity extends AppCompatActivity {
 				windTxt.setText(windSpeed);
 				pressureTxt.setText(pressure);
 				humidityTxt.setText(humidity);
+
+				lblShowCrops.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(HomeActivity.this, CropSuggestionActivity.class);
+						if (avgTemp < 20) {
+							intent.putExtra("season", 1);
+
+						} else {
+							intent.putExtra("season", 0);
+						}
+
+						startActivity(intent);
+					}
+				});
 
 			} catch (JSONException e) {
 
