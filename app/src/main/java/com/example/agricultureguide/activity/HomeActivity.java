@@ -1,16 +1,24 @@
 package com.example.agricultureguide.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androdocs.httprequest.HttpRequest;
 import com.example.agricultureguide.R;
 import com.example.agricultureguide.adapter.PagerAdapter;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +35,8 @@ public class HomeActivity extends AppCompatActivity {
 	private String API = "6b5680d9f09fa185703b6b171597a157";
 
 	private TextView addressTxt;
-	private TextView updated_atTxt;
+	private TextView updated_atTxt_time;
+	private TextView updated_atTxt_date;
 	private TextView statusTxt;
 	private TextView tempTxt;
 	private TextView temp_minTxt;
@@ -37,6 +46,12 @@ public class HomeActivity extends AppCompatActivity {
 	private TextView windTxt;
 	private TextView pressureTxt;
 	private TextView humidityTxt;
+	private ImageView imgBottomSheetArrow;
+
+	private ProgressBar progressBar;
+
+	private BottomSheetBehavior sheetBehavior;
+	private CardView layoutBottomSheet;
 
 	private List<Integer> infoList = new ArrayList<>();
 
@@ -44,7 +59,10 @@ public class HomeActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		bindViews();
+
+		new WeatherTask().execute();
 	}
 
 	private void bindViews() {
@@ -53,7 +71,8 @@ public class HomeActivity extends AppCompatActivity {
 		prepareInfoList();
 		mViewPager.setAdapter(adapter);
 		addressTxt = findViewById(R.id.address);
-		updated_atTxt = findViewById(R.id.updated_at);
+		updated_atTxt_date = findViewById(R.id.updated_at_date);
+		updated_atTxt_time = findViewById(R.id.updated_at_time);
 		statusTxt = findViewById(R.id.status);
 		tempTxt = findViewById(R.id.temp);
 		temp_minTxt = findViewById(R.id.temp_min);
@@ -63,8 +82,51 @@ public class HomeActivity extends AppCompatActivity {
 		windTxt = findViewById(R.id.wind);
 		pressureTxt = findViewById(R.id.pressure);
 		humidityTxt = findViewById(R.id.humidity);
+		imgBottomSheetArrow = findViewById(R.id.img_bottom_sheet_arrow);
 
-		new WeatherTask().execute();
+		progressBar = findViewById(R.id.progress_bar);
+
+		layoutBottomSheet = findViewById(R.id.bottom_sheet);
+		sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+		sheetBehavior.setPeekHeight(120);
+
+		// callback for do something
+		sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+			@Override
+			public void onStateChanged(@NonNull View view, int newState) {
+				switch (newState) {
+					case BottomSheetBehavior.STATE_HIDDEN:
+						break;
+					case BottomSheetBehavior.STATE_EXPANDED: {
+					}
+					break;
+					case BottomSheetBehavior.STATE_COLLAPSED: {
+					}
+					break;
+					case BottomSheetBehavior.STATE_DRAGGING:
+						break;
+					case BottomSheetBehavior.STATE_SETTLING:
+						break;
+				}
+			}
+
+			@Override
+			public void onSlide(@NonNull View view, float v) {
+
+			}
+		});
+
+		sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+			@Override
+			public void onStateChanged(@NonNull View view, int i) {
+
+			}
+
+			@Override
+			public void onSlide(@NonNull View view, float v) {
+				imgBottomSheetArrow.setRotation(v * 180);
+			}
+		});
 	}
 
 	private void prepareInfoList() {
@@ -88,6 +150,7 @@ public class HomeActivity extends AppCompatActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
+			progressBar.setVisibility(View.GONE);
 
 			try {
 				JSONObject jsonObj = new JSONObject(result);
@@ -97,7 +160,9 @@ public class HomeActivity extends AppCompatActivity {
 				JSONObject weather = jsonObj.getJSONArray("weather").getJSONObject(0);
 
 				long updatedAt = jsonObj.getLong("dt");
-				String updatedAtText = "Updated at: " + new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(new Date(updatedAt * 1000));
+				Date date = new Date(updatedAt * 1000);
+				String updatedAtText = "Updated at: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
+				String updateTime = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date);
 				String temp = main.getString("temp") + "°C";
 				String tempMin = "Min Temp: " + main.getString("temp_min") + "°C";
 				String tempMax = "Max Temp: " + main.getString("temp_max") + "°C";
@@ -112,7 +177,8 @@ public class HomeActivity extends AppCompatActivity {
 				String address = jsonObj.getString("name") + ", " + sys.getString("country");
 
 				addressTxt.setText(address);
-				updated_atTxt.setText(updatedAtText);
+				updated_atTxt_date.setText(updatedAtText);
+				updated_atTxt_time.setText(updateTime);
 				statusTxt.setText(weatherDescription.toUpperCase());
 				tempTxt.setText(temp);
 				temp_minTxt.setText(tempMin);
